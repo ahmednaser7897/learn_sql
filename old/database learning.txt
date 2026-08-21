@@ -1,0 +1,343 @@
+ddl section 3
+*انشاء قاعده بيانات*
+create database myFirstDatabase
+*انشاء جدول*
+create table student (
+	student_id INT primary key,
+	student_name varchar(50),
+	satus varchar(10),
+	-- primary key(student_id)
+);
+
+*مسح جدول*
+--drop table student3011;
+
+*اضافه عمود ادخال*
+--alter table student add gpa decimal(3,2);
+
+*مسح عمود ادخال *
+alter table student drop column satus;
+alter table student drop column gpa;
+
+*لاستخدام داتا بيز تم انشائها من قبل*
+use myFirstDatabase
+*لانشاء داتا تايب جديد و اعطائه مميزات معينه*
+exec sp_addtype number,'int', 'not null';
+alter table student add st_fax number;
+alter table student drop column st_fax;
+*لمسح داتا تيب جديد تم انشائه*
+exec sp_droptype number;
+*لعرض معلومات الجدول *
+exec sp_help student;
+*********************************************************
+
+
+--ddl section 4
+--لاعاده استخدام داتا بيز موجوده من قبل 
+use myFirstDatabase;
+--------------------------------------------
+--استخدام الايدنتتي كونسترينت لوضع ارقام تذايديه بمقدهر محددلعنصر ما
+create table student
+(
+	student_ID int identity(1,1) primary key,
+	student_Fname nvarchar(10),
+	student_Minit nvarchar(10),
+	student_lname nvarchar(10),
+	student_Bdate datetime,
+	age int
+)
+-----------------------------------------------
+--استخدام يونيك كونسترينت لعدم تكرار قيمه ما لعنصر محدد
+alter table student add maill nvarchar(50) unique ;
+----------------------------------------------
+--لعرض معلومات الجدول
+ exec sp_help student;
+ ---------------------------------------------
+create table class
+(
+	class_ID int identity(1,1) primary key,
+	class_name nvarchar(50),
+--استخدام ديفولت كونسترينت لاعطاء قيمه مبدائيه تلقائيا للعنصر عند عدم ادخال قيمه
+	class_floor nvarchar(50) default 'unnknow',
+)
+
+exec sp_help class;
+ 
+create table teacher
+(
+	teacher_ssn int identity(1,1) primary key,
+	teacher_Fname nvarchar(10),
+	teacher_Minit nvarchar(10),
+	teacher_lname nvarchar(10),
+)
+
+alter table student add class_ID int;
+-----------------------------------------------
+--طريقه اضافه الكونسترينت فورين كي بعد انشاء الجدول
+alter table student add constraint st_fk foreign key (class_ID) references class(class_ID)
+on delete set null on update cascade;
+
+exec sp_help student;
+ ------------------------------------------------
+create table teacher_class
+(
+--طريقه اضافه الكونسترينت فورين كي اثناء انشاء الجدول
+	id int foreign key references class (class_ID) on delete cascade on update cascade,
+	ssn int foreign key  references teacher (teacher_ssn)on delete cascade on update cascade,
+	no_sup int,
+--طريقه عمل برايماري كي مزدوج
+	constraint tt_pk primary key (id,ssn)
+)
+
+exec sp_help teacher_class;
+------------------------------------------------
+create table teacher_tell
+(
+	ssn int foreign key  references teacher (teacher_ssn)on delete cascade on update cascade,
+	tell int ,
+	constraint tell_pk primary key (tell,ssn)
+)
+
+exec sp_help teacher_tell;
+--------------------------------------------------
+--طريقه مسح كونسترينت عن طريق اسمه
+alter table student drop constraint UQ__student__11D4A22989C8553E;
+exec sp_help student;
+--------------------------------------------------
+**************************************************************
+
+
+
+dml section 5
+create database  company;
+	--استخدم الداتا بيز بعد انشائها لانه قد يكون يستخدم داتا بيز اخري
+use company;
+
+create table department
+(
+	name varchar(50) not null,
+	id int primary key identity (1,1)
+);
+
+create table student
+(
+	id int primary key,
+	name varchar(50) not null,
+	student_level int not null,
+	dept_id int foreign key references department (id)
+);
+
+------------------------------------
+--لا نضع ال اي دي لاني حددته بان يزيد تلقائيا
+insert into department values ('is');
+insert into department values ('cs');
+insert into department values ('al');
+insert into department values ('dl');
+
+--لادخال قيم معينه في صف معين
+insert into student (id,name,student_level,dept_id) values(2,'mohamed',4,6);
+insert into student (id,name,student_level,dept_id) values(3,'abdo',2,7);
+insert into student (id,name,student_level,dept_id) values(4,'mac',1,8);
+--لا يمكن تحقيق الخطوه القادمه لانه في قيمه الفورن كي في جدوله الاصلي لا يوجد قيمه عشرين
+--insert into student (id,name,student_level,dept_id) values(1,'ahmed',4,20);
+----------------------------------
+--لعرض جميع بيانات صفوف (البيانات الداخليه)الجدول
+select* from department;
+select* from student;
+------------------------------------
+-- لتعديل عمود كامل
+update  department
+set name ='swe'; 
+select* from department;
+
+--لتعديل قيمه معينه في صف معين
+update  department
+set name ='it' where id=3;
+select* from department;
+------------------------------------
+--لمسح بيانات المدخله كلها
+delete from  department;
+--لمسح صف معين
+delete from department
+where id =5;
+select* from department;
+------------------------------------
+--لمسح بيانات المدخله كلها
+truncate table student;
+select* from student;
+------------------------------------
+*****************************************************************
+--استخدام مثال سيكشن 5
+--dml section 6
+--لعرض جميع بيانات صفوف (البيانات الداخليه)الجدول
+select* from department;
+select* from student;
+---------------------------------------
+--ابحث عن صفوف  معينه
+select * from student 
+where student_level=4;
+----------------------------------------
+--ابحث عن عمود معين
+select name from student
+select id from student
+select name,dept_id from student;
+----------------------------------------
+--يرجع قيم عمود معين ولا يرجع المتكرر اكثر من مره اي انه اذا يوجد كذا قيمه 2 يرجع 2 مره واحده فقط
+select distinct student_level from student;
+--------------------------------------------
+-- and & or & not
+select* from student
+where student_level=4 and dept_id =1;
+
+select* from student
+where student_level=4 or dept_id =8;
+
+select* from student
+where not student_level=4 and not dept_id =8;
+--------------------------------------------- 
+--لعرض الجدول مرتب ب عنصر معين تصاعدي
+select * from student order by name;
+--لعرض الجدول مرتب ب عنصر معين تنازلي
+select * from student order by name desc;
+
+select * from student order by name, dept_id;
+----------------------------------------------
+--لتغير اسم عمود ما
+select name as std_name from student;
+--------------------------------------------
+--Sub queries
+select name,id,student_level from student
+where dept_id in
+(
+select id from department 
+where name='swe'
+);
+--------------------------------------------
+-- تستخدم كلمه in للبحث عن قيم معينه
+select *from person where first_name in ('ahmed','naser');
+--------------------------------------------
+-- between ... and تستخدم للحصول علي قيم محصوره بين قيمتين معينتان
+select * from  student where id between 3 and 6;
+select * from  student where id not between 3 and 6;
+------------------------------------------------ 
+-- ابحث عن كلمات معينه عن طريق البحث باجزائها
+-- مثلا هنا يتم البحث عن كلمه اخرها d
+select * from student
+where name like '%o' ;
+--وهنا يتم البحث عن كلمه اولها a
+select * from student
+where name like 'a%' ;
+--وهنا يتم البحث عن كلمه بداخلها s
+select * from student
+where name like '%d%' ;
+---------------------------------------------
+***********************************************************
+
+
+use pl_project
+-- functions
+--count
+--تعمل هذه الفانكشن علي عد عمود معين في التيبول وتاخذ اسم عمود و ترجع انتيجر
+--لو يوجد قيمه نل في هذا العمود لا تعد 
+select COUNT(student.std_id) from student--4
+
+select COUNT(student.std_id) from student
+where std_pass>123;--3
+----------------------------------------------
+--avg
+--تستخدم للحصول علي متوسط قيم عمود معين قيمه رقميه و تاخذ اسم عمود و ترجع رقم
+select AVG(student.std_id ) from student
+----------------------------------------------
+--sum
+--تستخدم للحصول علي مجموع قيم عمود معين قيمه رقميه و تاخذ اسم عمود و ترجع رقم
+select SUM(student.std_id ) from student
+---------------------------------------------- 
+--_
+--تستخدم هذه العلامه مثل علامه % ولكن بدل البحث في كل الاسترينج نبحث في جزء معين فيه
+--مثال :اذا اردنا البحث عن الكورس الذي يبداء في شهر 10 
+--نوضع قبل خانات الشهر هذه العلامه (_) لندل اننا نريرد البحذ من الانديكس الي اكثر من عددهم بواحد
+--مثلا اذا كان التايخ الذي نبحث عليه هو "2020-02-02 "نكتب
+--"'____-02%'"
+select * from course where start_course_date like '____-02%';
+----------------------------------------------
+--union
+-- يستخدم لارجعاع ناتج كذا سيلكت(من نفس نوع الداتا تايب) في عمود واحد
+select student.std_id from student;
+select student.std_pass from student;
+--الي تحت مجموع الي فوق في عمود واحد
+select student.std_id from student union
+select student.std_pass from student;
+----------------------------------------------
+--join 
+--تستخدم جوين للربط بين صفين في جدولين مختلفين او في نفس الجدول عند اشتراكهم في اتربيوت معين و غالبا يكون فورين كي بينهم
+select * from student join std_reg_cou on std_id=student_id;
+--يعرض كل بيانات العمود الذي علي اليسار حتي وان لم يتحقق الشرط عليها و يعطي للقيم المقابله نل
+select * from student left join std_reg_cou on std_id=student_id;
+--يعرض كل بيانات العمود الذي علي اليمين حتي وان لم يتحقق الشرط عليها و يعطي للقيم المقابله نل
+select * from student right join std_reg_cou on std_id=student_id;
+--يمكن وضع شرط
+select * from student join std_reg_cou on std_id=student_id
+where std_id>2;
+----------------------------------------------
+--nested queries
+select std_name,student.std_userName from student where std_id in
+(
+select std_reg_cou.student_id from std_reg_cou where student_id>2 
+);
+----------------------------------------------
+--on delete
+--on delete set null
+--تعني انه عند مسح قيمه مستخدمه ك فورين كي في جدول اخر يضع مكانها نل في هذا الجدول
+--on delete cascade 
+--تعني انه عند مسح قيمه مستخدمه ك فورين كي في جدول اخر يتم مسح صف هذه القيمه من الجدول ل
+----------------------------------------------
+********************************************************************
+
+use pl_project
+
+create table student
+(
+	std_id int primary key identity(1,1),
+	std_fname varchar(50),
+	std_lname varchar(50), 
+	std_pass int not null,
+	std_userName varchar(50)
+);
+
+create table course
+(
+	cou_id int primary key identity(1,1),
+	cou_name varchar(50), 
+	cou_pass int not null,
+	cou_userName varchar(50)
+);
+
+alter table student add student_course;
+alter table student constraint st_cou foreign key (student_course) references course(cou_id);
+
+create table  instructor
+(
+	inst_id int primary key identity(1,1),
+	inst_name varchar(50), 
+	inst_pass int not null,
+	inst_userName varchar(50)
+);
+
+create table  adminn
+(
+	admin_id int primary key identity(1,1),
+	admin_name varchar(50), 
+	admin_pass int not null,
+	admin_userName varchar(50)
+);
+
+create table  std_reg_cou
+(
+	student_id int foreign key references student (std_id) on delete cascade on update cascade, 
+	course_id int foreign key references course (cou_id) on delete cascade on update cascade, 
+	constraint s_r_c primary key(student_id,course_id)	 
+);
+
+
+
+
