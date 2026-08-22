@@ -227,7 +227,16 @@ VALUES
 
 (4, 'Cannondale Kids', 4, 4, 2025, 500.00),
 
-(5, 'Scott Helmet', 5, 5, 2026, 150.00);
+(5, 'Scott Helmet', 5, 5, 2026, 150.00),
+(6, 'Trek Marlin 72', 1, 1, 2025, 1200.00),
+
+(7, 'Giant Contend AR2', 2, 2, 2025, 900.00),
+
+(8, 'Specialized Turbo2', 3, 3, 2026, 2000.00),
+
+(9, 'Cannondale Kids'2, 4, 4, 2025, 700.00),
+
+(10, 'Scott Helmet2', 5, 5, 2026, 1890.00);
 GO
 
 -- Show products
@@ -254,7 +263,7 @@ INSERT INTO sales_schema.orders
     store_id,
     staff_id
 )
-VALUES
+VALUES (6, 1, 'Shipped', null, '2026-08-08', 2, 3),
 (1, 1, 'Completed', null, '2026-08-08', 1, 1),
 
 (2, 2, 'Shipped', null, '2026-08-13', 2, 2),
