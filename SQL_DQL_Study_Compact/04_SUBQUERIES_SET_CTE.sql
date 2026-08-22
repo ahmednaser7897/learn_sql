@@ -2,7 +2,7 @@
 Subqueries
 */
 
--- 41) SUBQUERY : A subquery is a query inside another query.
+-- SUBQUERY : A subquery is a query inside another query.
 
 -- Get customers ids that has orders.
 SELECT customer_id  FROM sales_schema.orders
@@ -21,7 +21,7 @@ GO
 
 -- ============================================================
 
--- 42) SUBQUERY WITH WHERE : A subquery can be used to compare with a value.
+-- SUBQUERY WITH WHERE : A subquery can be used to compare with a value.
 -- Get products more expensive than the average product price.
 SELECT product_id, product_name, list_price
 FROM production_schema.products
@@ -33,7 +33,7 @@ GO
 
 -- ============================================================
 
--- 43) SUBQUERY WITH IN : IN checks if a value exists in the subquery result.
+-- SUBQUERY WITH IN : IN checks if a value exists in the subquery result.
 -- Get customers who placed an order in 2018.
 SELECT customer_id, first_name, last_name
 FROM sales_schema.customers
@@ -46,7 +46,7 @@ GO
 
 -- ============================================================
 
--- 44) SUBQUERY WITH NOT IN : NOT IN returns values that do not exist in the subquery.
+-- SUBQUERY WITH NOT IN : NOT IN returns values that do not exist in the subquery.
 -- Get customers who have never placed an order.
 SELECT customer_id, first_name, last_name
 FROM sales_schema.customers
@@ -58,7 +58,7 @@ GO
 
 -- ============================================================
 
--- 45) EXISTS : EXISTS checks whether the subquery returns at least one row.
+-- EXISTS : EXISTS checks whether the subquery returns at least one row.
 -- Get customers who have at least one order.
 SELECT c.customer_id, c.first_name, c.last_name
 FROM sales_schema.customers AS c
@@ -82,7 +82,7 @@ GO
 
 -- ============================================================
 
--- 46) CORRELATED SUBQUERY : The subquery uses a value from the outer query.
+-- CORRELATED SUBQUERY : The subquery uses a value from the outer query.
 -- Get products whose price is higher than the average price of their category.
 SELECT p.product_id, p.product_name, p.category_id, p.list_price
 FROM production_schema.products AS p
@@ -95,7 +95,7 @@ GO
 
 -- ============================================================
 
--- 47) SUBQUERY WITH MAX : Get products with the highest price.
+-- SUBQUERY WITH MAX : Get products with the highest price.
 SELECT product_id, product_name, list_price
 FROM production_schema.products
 WHERE list_price = (
@@ -106,7 +106,7 @@ GO
 
 -- ============================================================
 
--- 48) SUBQUERY WITH MIN : Get products with the lowest price.
+-- SUBQUERY WITH MIN : Get products with the lowest price.
 SELECT product_id, product_name, list_price
 FROM production_schema.products
 WHERE list_price = (
@@ -117,7 +117,7 @@ GO
 
 -- ============================================================
 
--- 49) SUBQUERY IN SELECT : A subquery can be used as a calculated column.
+-- SUBQUERY IN SELECT : A subquery can be used as a calculated column.
 -- Show each product and the average product price.
 SELECT product_id, product_name, list_price,
        (SELECT AVG(list_price) FROM production_schema.products) AS avg_price
@@ -126,7 +126,7 @@ GO
 
 -- ============================================================
 
--- 50) SUBQUERY IN FROM : A subquery in FROM creates a temporary result table.
+-- SUBQUERY IN FROM : A subquery in FROM creates a temporary result table.
 -- Get customers with more than 2 orders.
 SELECT customer_id, order_count
 FROM (
@@ -139,7 +139,7 @@ GO
 
 -- ============================================================
 
--- 51) ANY : ANY returns TRUE if the condition matches at least one value.
+-- ANY : ANY returns TRUE if the condition matches at least one value.
 -- Get products more expensive than at least one product in category 1.
 SELECT product_id, product_name, list_price
 FROM production_schema.products
@@ -152,7 +152,7 @@ GO
 
 -- ============================================================
 
--- 52) ALL : ALL returns TRUE if the condition matches every value.
+-- ALL : ALL returns TRUE if the condition matches every value.
 -- Get products more expensive than every product in category 1.
 SELECT product_id, product_name, list_price
 FROM production_schema.products
@@ -165,7 +165,7 @@ GO
 
 -- ============================================================
 
--- 53) SUBQUERY WITH GROUP BY : A subquery can return grouped results.
+-- SUBQUERY WITH GROUP BY : A subquery can return grouped results.
 -- Get customers who have more than 3 orders.
 SELECT customer_id, first_name, last_name
 FROM sales_schema.customers
@@ -179,7 +179,7 @@ GO
 
 -- ============================================================
 
--- 54) SUBQUERY WITH DISTINCT : DISTINCT can remove duplicate values from a subquery.
+-- SUBQUERY WITH DISTINCT : DISTINCT can remove duplicate values from a subquery.
 -- Get customers who have orders without returning duplicate customer IDs.
 SELECT customer_id, first_name, last_name
 FROM sales_schema.customers
@@ -190,60 +190,60 @@ WHERE customer_id IN (
 GO
 -- ============================================================
 
--- 45) EXISTS : EXISTS checks whether the subquery returns at least one row.
+-- EXISTS : EXISTS checks whether the subquery returns at least one row.
 SELECT * FROM sales_schema.customers AS c 
 WHERE EXISTS ( SELECT 1 FROM sales_schema.orders AS o WHERE o.customer_id = c.customer_id );
 GO
 
 -- ============================================================
 
--- 46) NOT EXISTS : NOT EXISTS finds rows without a matching row.
+-- NOT EXISTS : NOT EXISTS finds rows without a matching row.
 SELECT * FROM sales_schema.customers AS c WHERE 
 NOT EXISTS ( SELECT 1 FROM sales_schema.orders AS o WHERE o.customer_id = c.customer_id );
 GO
 
 -- ============================================================
 
--- 47) ANY : ANY compares a value with any value returned by a subquery.
+-- ANY : ANY compares a value with any value returned by a subquery.
 SELECT * FROM production_schema.products 
 WHERE list_price > ANY ( SELECT list_price FROM production_schema.products WHERE category_id = 1 );
 GO
 
 -- ============================================================
 
--- 48) ALL : ALL compares a value with every value returned by a subquery.
+-- ALL : ALL compares a value with every value returned by a subquery.
 SELECT * FROM production_schema.products 
 WHERE list_price > ALL ( SELECT list_price FROM production_schema.products WHERE category_id = 1 );
 GO
 
 -- ============================================================
 
--- 49) UNION : UNION combines results and removes duplicates.
+-- UNION : UNION combines results and removes duplicates.
 SELECT city FROM sales_schema.customers 
 UNION SELECT city FROM sales_schema.stores;
 GO
 
 -- ============================================================
 
--- 50) UNION ALL : UNION ALL combines results and keeps duplicates.
+-- UNION ALL : UNION ALL combines results and keeps duplicates.
 SELECT city FROM sales_schema.customers UNION ALL SELECT city FROM sales_schema.stores;
 GO
 
 -- ============================================================
 
--- 51) INTERSECT : INTERSECT returns values existing in both result sets.
+-- INTERSECT : INTERSECT returns values existing in both result sets.
 SELECT city FROM sales_schema.customers INTERSECT SELECT city FROM sales_schema.stores;
 GO
 
 -- ============================================================
 
--- 52) EXCEPT : EXCEPT returns values from the first query not found in the second.
+-- EXCEPT : EXCEPT returns values from the first query not found in the second.
 SELECT city FROM sales_schema.customers EXCEPT SELECT city FROM sales_schema.stores;
 GO
 
 -- ============================================================
 
--- 53) RULES FOR SET OPERATORS
+-- RULES FOR SET OPERATORS
 /*
 UNION
 UNION ALL
@@ -259,7 +259,7 @@ compatible column positions
 
 -- ============================================================
 
--- 54) CTE : CTE creates a temporary named result for one statement.
+-- CTE : CTE creates a temporary named result for one statement.
 
 WITH ProductData AS ( SELECT product_id, product_name, list_price FROM production_schema.products ) 
 SELECT * FROM ProductData;
@@ -267,21 +267,21 @@ GO
 
 -- ============================================================
 
--- 55) CTE WITH FILTER : CTE can make a complex query easier to read.
+-- CTE WITH FILTER : CTE can make a complex query easier to read.
 WITH ExpensiveProducts AS ( SELECT product_id, product_name, list_price FROM production_schema.products WHERE list_price > 1000 ) 
 SELECT * FROM ExpensiveProducts ORDER BY list_price DESC;
 GO
 
 -- ============================================================
 
--- 56) CTE WITH GROUP BY : CTE can store an aggregated result.
+-- CTE WITH GROUP BY : CTE can store an aggregated result.
 WITH CustomerOrders AS ( SELECT customer_id, COUNT(*) AS order_count FROM sales_schema.orders GROUP BY customer_id ) 
 SELECT * FROM CustomerOrders WHERE order_count > 1;
 GO
 
 -- ============================================================
 
--- 57) RECURSIVE CTE : Recursive CTE can generate a sequence of numbers.
+-- RECURSIVE CTE : Recursive CTE can generate a sequence of numbers.
 WITH Numbers AS ( SELECT 1 AS number
 
 UNION ALL
@@ -291,7 +291,7 @@ GO
 
 -- ============================================================
 
--- 89) SUBQUERY IN SELECT : A scalar subquery can appear inside SELECT.
+-- SUBQUERY IN SELECT : A scalar subquery can appear inside SELECT.
 SELECT p.product_name, p.list_price, ( SELECT AVG(list_price) 
 FROM production_schema.products ) AS average_price 
 FROM production_schema.products AS p;
@@ -299,13 +299,13 @@ GO
 
 -- ============================================================
 
--- 90) SUBQUERY IN FROM : A subquery in FROM creates a derived table.
+-- SUBQUERY IN FROM : A subquery in FROM creates a derived table.
 SELECT * FROM ( SELECT product_id, product_name, list_price FROM production_schema.products WHERE list_price > 1000 ) AS ExpensiveProducts;
 GO
 
 -- ============================================================
 
--- 91) DERIVED TABLE WITH AGGREGATION : A derived table can contain grouped data.
+-- DERIVED TABLE WITH AGGREGATION : A derived table can contain grouped data.
 SELECT * FROM ( SELECT category_id, AVG(list_price) AS average_price FROM production_schema.products GROUP BY category_id ) AS CategoryPrices WHERE average_price > 1000;
 GO
 

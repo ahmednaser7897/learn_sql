@@ -2,7 +2,7 @@
 Functions, CASE and aggregation
 */
 
--- 20) CONCATENATION : + can combine text values.
+-- CONCATENATION : + can combine text values.
 SELECT first_name + ' ' + last_name AS full_name FROM sales_schema.customers;
 GO
 
@@ -12,7 +12,7 @@ GO
 
 -- ============================================================
 
--- 21) STRING FUNCTIONS : LEN returns the number of characters.
+-- STRING FUNCTIONS : LEN returns the number of characters.
 SELECT first_name, LEN(first_name) AS name_length FROM sales_schema.customers;
 GO
 
@@ -58,7 +58,7 @@ GO
 
 -- ============================================================
 
--- 22) NUMERIC FUNCTIONS : ROUND rounds a number.
+-- NUMERIC FUNCTIONS : ROUND rounds a number.
 SELECT ROUND(list_price, 0) AS rounded_price FROM production_schema.products;
 GO
 
@@ -76,7 +76,7 @@ GO
 
 -- ============================================================
 
--- 23) DATE FUNCTIONS : GETDATE returns the current date and time.
+-- DATE FUNCTIONS : GETDATE returns the current date and time.
 SELECT GETDATE() AS current_datetime;
 GO
 
@@ -110,7 +110,7 @@ GO
 
 -- ============================================================
 
--- 24) NULL FUNCTIONS : ISNULL replaces NULL with another value.
+-- NULL FUNCTIONS : ISNULL replaces NULL with another value.
 SELECT customer_id, ISNULL(title, 'No Title') AS title FROM sales_schema.customers;
 GO
 
@@ -120,7 +120,7 @@ GO
 
 -- ============================================================
 
--- 25) CAST AND CONVERT : CAST converts a value to another data type.
+-- CAST AND CONVERT : CAST converts a value to another data type.
 SELECT CAST(list_price AS INT) AS price_integer FROM production_schema.products;
 GO
 
@@ -134,7 +134,7 @@ GO
 
 -- ============================================================
 
--- 26) CASE : CASE creates conditional output.
+-- CASE : CASE creates conditional output.
 SELECT product_name, list_price, CASE WHEN list_price >= 2000 THEN 'Expensive' WHEN list_price >= 1000 THEN 'Medium' ELSE 'Cheap' END AS price_category FROM production_schema.products;
 GO
 
@@ -148,7 +148,7 @@ GO
 
 -- ============================================================
 
--- 27) AGGREGATE FUNCTIONS : COUNT counts rows.
+-- AGGREGATE FUNCTIONS : COUNT counts rows.
 SELECT COUNT(*) AS total_customers FROM sales_schema.customers;
 GO
 
@@ -174,7 +174,7 @@ GO
 
 -- ============================================================
 
--- 28) GROUP BY : GROUP BY creates one result row for each group.
+-- GROUP BY : GROUP BY creates one result row for each group.
 -- so this gets the count of each city
 SELECT city, COUNT(*) AS customer_count FROM sales_schema.customers GROUP BY city;
 GO
@@ -195,7 +195,7 @@ GO
 
 -- ============================================================
 
--- 29) HAVING : HAVING filters groups after GROUP BY.
+-- HAVING : HAVING filters groups after GROUP BY.
 SELECT city, COUNT(*) AS customer_count FROM sales_schema.customers GROUP BY city HAVING COUNT(*) > 1;
 GO
 
@@ -206,7 +206,7 @@ GO
 
 -- ============================================================
 
--- 30) WHERE VS HAVING
+-- WHERE VS HAVING
 /*
 WHERE:
 Filters individual rows.
@@ -223,25 +223,25 @@ ORDER BY
 
 -- ============================================================
 
--- 82) DISTINCT WITH FUNCTIONS : DISTINCT can be combined with functions.
+-- DISTINCT WITH FUNCTIONS : DISTINCT can be combined with functions.
 SELECT DISTINCT YEAR(order_date) AS order_year FROM sales_schema.orders;
 GO
 
 -- ============================================================
 
--- 86) CONDITIONAL AGGREGATION : CASE can be used inside aggregate functions.
+-- CONDITIONAL AGGREGATION : CASE can be used inside aggregate functions.
 SELECT COUNT(*) AS total_orders, SUM(CASE WHEN order_status = 'Completed' THEN 1 ELSE 0 END) AS completed_orders, SUM(CASE WHEN order_status = 'Cancelled' THEN 1 ELSE 0 END) AS cancelled_orders, SUM(CASE WHEN order_status = 'Pending' THEN 1 ELSE 0 END) AS pending_orders FROM sales_schema.orders;
 GO
 
 -- ============================================================
 
--- 87) COUNT DISTINCT : COUNT DISTINCT counts unique values.
+-- COUNT DISTINCT : COUNT DISTINCT counts unique values.
 SELECT COUNT(DISTINCT city) AS unique_cities FROM sales_schema.customers;
 GO
 
 -- ============================================================
 
--- 88) GROUP BY WITH CASE : CASE can create custom groups before aggregation.
+-- GROUP BY WITH CASE : CASE can create custom groups before aggregation.
 SELECT CASE WHEN list_price >= 2000 THEN 'Expensive' WHEN list_price >= 1000 THEN 'Medium' ELSE 'Cheap' END AS price_group, COUNT(*) AS product_count FROM production_schema.products GROUP BY CASE WHEN list_price >= 2000 THEN 'Expensive' WHEN list_price >= 1000 THEN 'Medium' ELSE 'Cheap' END;
 GO
 

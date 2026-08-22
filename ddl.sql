@@ -20,37 +20,16 @@ USE master;
 GO
 
 -- Create database if it does not exist
-IF DB_ID(N'BikeStores') IS NULL
-BEGIN
-    CREATE DATABASE BikeStores;
-END;
-GO
+
+CREATE DATABASE BikeStores;
 
 -- Move to BikeStores database
 USE BikeStores;
 GO
 
-
-/*
--- Delete and create database again
--- WARNING: this deletes all data
-
-USE master;
-GO
-
-IF DB_ID(N'BikeStores') IS NOT NULL
-BEGIN
-    ALTER DATABASE BikeStores SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE BikeStores;
-END;
-GO
-
-CREATE DATABASE BikeStores;
-GO
-
-USE BikeStores;
-GO
-*/
+-- Delete  database
+--DROP DATABASE BikeStores
+--GO
 
 
 -- ============================================================
@@ -58,7 +37,10 @@ GO
 -- ============================================================
 
 -- Schema = group of related tables
-
+--CREATE SCHEMA sales_schema;
+--GO
+--CREATE SCHEMA sales_schema;
+--GO
 IF SCHEMA_ID(N'sales_schema') IS NULL
     EXEC(N'CREATE SCHEMA sales_schema');
 GO
@@ -68,13 +50,12 @@ IF SCHEMA_ID(N'production_schema') IS NULL
 GO
 
 
-/*
+
 -- Delete schema
 -- Schema must be empty first
+--DROP SCHEMA sales_schema;
+--DROP SCHEMA production_schema;
 
-DROP SCHEMA sales_schema;
-DROP SCHEMA production_schema;
-*/
 
 
 -- ============================================================

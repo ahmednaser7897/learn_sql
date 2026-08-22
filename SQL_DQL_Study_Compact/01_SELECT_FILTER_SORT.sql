@@ -2,7 +2,7 @@
 SELECT, filtering, sorting and basic expressions
 */
 
--- 2) BASIC SELECT : SELECT * returns all columns.
+-- BASIC SELECT : SELECT * returns all columns.
 SELECT * FROM sales_schema.customers;
 GO
 
@@ -16,7 +16,7 @@ GO
 
 -- ============================================================
 
--- 3) COLUMN ALIAS : AS gives a column a temporary display name.
+-- COLUMN ALIAS : AS gives a column a temporary display name.
 SELECT first_name AS FirstName, last_name AS LastName, email AS EmailAddress FROM sales_schema.customers;
 GO
 
@@ -26,7 +26,7 @@ GO
 
 -- ============================================================
 
--- 4) TABLE ALIAS : A table alias gives a short name to the table.
+-- TABLE ALIAS : A table alias gives a short name to the table.
 SELECT c.customer_id, c.first_name, c.last_name FROM sales_schema.customers  AS c;
 GO
 -- AS is optional for column aliases and you can use [].
@@ -35,7 +35,7 @@ GO
 
 -- ============================================================
 
--- 5) DISTINCT : DISTINCT removes duplicate values from the result.
+-- DISTINCT : DISTINCT removes duplicate values from the result.
 SELECT DISTINCT city FROM sales_schema.customers;
 GO
 
@@ -45,7 +45,7 @@ GO
 
 -- ============================================================
 
--- 6) TOP : TOP returns the first specified number of rows.
+-- TOP : TOP returns the first specified number of rows.
 SELECT TOP 3 * FROM sales_schema.customers;
 GO
 
@@ -59,7 +59,7 @@ GO
 
 -- ============================================================
 
--- 7) WHERE : WHERE filters rows based on a condition.
+-- WHERE : WHERE filters rows based on a condition.
 SELECT * FROM sales_schema.customers WHERE city = 'Cairo';
 GO
 
@@ -73,7 +73,7 @@ GO
 
 -- ============================================================
 
--- 8) COMPARISON OPERATORS : Equal to uses =.
+-- COMPARISON OPERATORS : Equal to uses =.
 SELECT * FROM production_schema.products WHERE list_price = 1500;
 GO
 
@@ -99,31 +99,31 @@ GO
 
 -- ============================================================
 
--- 9) AND : AND requires all conditions to be true.
+-- AND : AND requires all conditions to be true.
 SELECT * FROM production_schema.products WHERE list_price > 500 AND list_price < 2000;
 GO
 
 -- ============================================================
 
--- 10) OR : OR requires at least one condition to be true.
+-- OR : OR requires at least one condition to be true.
 SELECT * FROM sales_schema.customers WHERE city = 'Cairo' OR city = 'Alex';
 GO
 
 -- ============================================================
 
--- 11) NOT : NOT reverses a condition.
+-- NOT : NOT reverses a condition.
 SELECT * FROM sales_schema.customers WHERE NOT city = 'Cairo';
 GO
 
 -- ============================================================
 
--- 12) COMBINING AND / OR : Parentheses control the order of logical conditions.
+-- COMBINING AND / OR : Parentheses control the order of logical conditions.
 SELECT * FROM production_schema.products WHERE (category_id = 1 OR category_id = 2) AND list_price > 1400;
 GO
 
 -- ============================================================
 
--- 13) IN : IN checks whether a value exists in a list.
+-- IN : IN checks whether a value exists in a list.
 SELECT * FROM sales_schema.customers WHERE city IN ('Cairo', 'Alex');
 GO
 
@@ -133,7 +133,7 @@ GO
 
 -- ============================================================
 
--- 14) BETWEEN : BETWEEN checks whether a value is inside a range.
+-- BETWEEN : BETWEEN checks whether a value is inside a range.
 SELECT * FROM production_schema.products WHERE list_price BETWEEN 500 AND 1500;
 GO
 
@@ -147,7 +147,7 @@ GO
 
 -- ============================================================
 
--- 15) LIKE : LIKE searches for a text pattern.
+-- LIKE : LIKE searches for a text pattern.
 SELECT * FROM sales_schema.customers WHERE first_name LIKE 'A%';
 GO
 
@@ -173,7 +173,7 @@ GO
 
 -- ============================================================
 
--- 16) NULL : NULL means the value is missing or unknown.
+-- NULL : NULL means the value is missing or unknown.
 SELECT * FROM sales_schema.customers WHERE title IS NULL;
 GO
 
@@ -186,7 +186,7 @@ GO
 
 -- ============================================================
 
--- 17) ORDER BY : ORDER BY sorts the result in ascending order , defulte is ASC
+-- ORDER BY : ORDER BY sorts the result in ascending order , defulte is ASC
 SELECT * FROM production_schema.products ORDER BY list_price ASC;
 GO
 
@@ -204,7 +204,7 @@ GO
 
 -- ============================================================
 
--- 18) ORDER BY COLUMN NUMBER : SQL Server allows ordering by the column position.
+-- ORDER BY COLUMN NUMBER : SQL Server allows ordering by the column position.
 SELECT product_id, product_name, list_price FROM production_schema.products ORDER BY 3 DESC;
 GO
 
@@ -212,7 +212,7 @@ GO
 
 -- ============================================================
 
--- 19) CALCULATED COLUMNS : Arithmetic operators can be used inside SELECT.
+-- CALCULATED COLUMNS : Arithmetic operators can be used inside SELECT.
 SELECT product_name, list_price, list_price + 100 AS new_price FROM production_schema.products;
 GO
 
